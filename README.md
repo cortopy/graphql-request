@@ -1,4 +1,10 @@
-# graphql-request
+# graphql-request-light
+
+> **_NOTE:_**  This is pretty much the same as [graphql-request](https://github.com/jasonkuhrt/graphql-request) except:
+> - There is no runtime dependency on `graphql`. This can reduce your bundle by nearly 200k (parsed)
+> - In exchange, documents passed to request need to be a `DocumentNode` rather than a string that needs parsing. 
+>
+> This version will throw in those instances that differ from the upstream.
 
 Minimal GraphQL client supporting Node and browsers for scripts or simple apps
 

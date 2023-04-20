@@ -1,6 +1,6 @@
 {
-  "name": "graphql-request",
-  "version": "0.0.0-dripip",
+  "name": "@j3a/graphql-request-light",
+  "version": "5.1.0",
   "main": "dist/index.js",
   "files": [
     "dist",
