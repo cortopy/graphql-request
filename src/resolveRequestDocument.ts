@@ -1,4 +1,4 @@
-import { DocumentNode, OperationDefinitionNode, parse, print } from 'graphql'
+import type { DocumentNode, OperationDefinitionNode } from 'graphql'
 import { RequestDocument } from './types'
 
 /**
@@ -21,19 +21,14 @@ function extractOperationName(document: DocumentNode): string | undefined {
 
 export function resolveRequestDocument(document: RequestDocument): { query: string; operationName?: string } {
   if (typeof document === 'string') {
-    let operationName = undefined
-
-    try {
-      const parsedDocument = parse(document)
-      operationName = extractOperationName(parsedDocument)
-    } catch (err) {
-      // Failed parsing the document, the operationName will be undefined
-    }
-
-    return { query: document, operationName }
+    throw Error("String documents are not supported. Use the full graphql-request instead");
   }
 
   const operationName = extractOperationName(document)
+  const location = document.loc
+  if (!location) {
+    throw Error("DocumentNode must include location. Use the full graphql-request instead")
+  }
 
-  return { query: print(document), operationName }
+  return { query: location.source.body, operationName }
 }

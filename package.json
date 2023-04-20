@@ -50,9 +50,6 @@
     "extract-files": "^9.0.0",
     "form-data": "^3.0.0"
   },
-  "peerDependencies": {
-    "graphql": "14 - 16"
-  },
   "devDependencies": {
     "@prisma-labs/prettier-config": "^0.1.0",
     "@types/body-parser": "^1.19.1",
