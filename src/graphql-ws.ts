@@ -249,7 +249,9 @@ export class GraphQLWebSocketClient {
   }
 
   close() {
-    this.socket.close(1000)
+    if (this.socket.readyState !== this.socket.CLOSING && this.socket.readyState !== this.socket.CLOSED) {
+      this.socket.close(1000)
+    }
   }
 }
 
