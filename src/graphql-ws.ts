@@ -164,7 +164,10 @@ export class GraphQLWebSocketClient {
 
           case COMPLETE: {
             subscriber.complete && subscriber.complete()
-            delete this.socketState.subscriptions[message.id]
+            // When this instance is closed, the onclose socket listener
+            // will reset state. No need to delete here
+            // delete this.socketState.subscriptions[message.id]
+            this.close()
             return
           }
         }
@@ -188,7 +191,10 @@ export class GraphQLWebSocketClient {
     this.socket.send(Subscribe(subscriptionId, { query, operationName, variables }).text)
     return () => {
       this.socket.send(Complete(subscriptionId).text)
-      delete this.socketState.subscriptions[subscriptionId]
+      // Subscription state will be handled when ws is closed
+      // If subscription is deleted now, then the subscription's complete hook will never be called
+      // when the client is the party completing the connection
+      // delete this.socketState.subscriptions[subscriptionId]
     }
   }
 
