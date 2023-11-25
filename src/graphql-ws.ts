@@ -1,6 +1,5 @@
 import { ClientError, RequestDocument, Variables } from './types'
 import * as Dom from './types.dom'
-import { resolveRequestDocument } from './resolveRequestDocument'
 
 const CONNECTION_INIT = 'connection_init'
 const CONNECTION_ACK = 'connection_ack'
@@ -218,11 +217,16 @@ export class GraphQLWebSocketClient {
     )
   }
 
-  request<T = any, V extends Variables = Variables>(document: RequestDocument, variables?: V): Promise<T> {
+  request<T = any, V extends Variables = Variables>(
+    query: string,
+    operationName: string,
+    variables?: V
+  ): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       let result: T
       this.subscribe(
-        document,
+        query,
+        operationName,
         {
           next: (data: T) => (result = data),
           error: reject,
@@ -234,11 +238,12 @@ export class GraphQLWebSocketClient {
   }
 
   subscribe<T = any, V extends Variables = Variables, E = any>(
-    document: RequestDocument,
+    query: string,
+    operationName: string,
     subscriber: GraphQLSubscriber<T, E>,
     variables?: V
   ): UnsubscribeCallback {
-    const { query, operationName } = resolveRequestDocument(document)
+    // const { query, operationName } = resolveRequestDocument(document)
     return this.makeSubscribe(query, operationName, subscriber, variables)
   }
 
